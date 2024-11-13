@@ -23,7 +23,7 @@ class JWTAuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return ['user' => $user,'token' => $token->plainTextToken];
+        return ['user' => $user, 'token' => $token];
     }
 
 
@@ -48,10 +48,9 @@ class JWTAuthController extends Controller
 
     public function getUser()
     {
+
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json(['error' => 'User not found'], 404);
-            }
+            $user = JWTAuth::parseToken()->authenticate();
         } catch (JWTException $e) {
             return response()->json(['error' => 'Invalid token'], 400);
         }
@@ -61,8 +60,9 @@ class JWTAuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-
-        return ['message' => 'Successfully logged out'];
+        
+        JWTAuth::invalidate(JWTAuth::getToken());
+        
+        return response()->json(['message' => 'Successfully logged out']);
     }
 }
