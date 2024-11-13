@@ -18,7 +18,7 @@ onMounted(() => (errors.value = {}));
 
 <template>
   <main>
-    <br>
+    
     <h1 class="title">Register a new account</h1>
     
     <form
@@ -29,12 +29,12 @@ onMounted(() => (errors.value = {}));
         <input type="text" placeholder="Name" v-model="formData.name" />
         <p v-if="errors.name" class="error">{{ errors.name[0] }}</p>
       </div>
-      <br>
+      
       <div>
         <input type="text" placeholder="Email" v-model="formData.email" />
         <p v-if="errors.email" class="error">{{ errors.email[0] }}</p>
       </div>
-      <br>
+      
       <div>
         <input
           type="password"
@@ -43,7 +43,7 @@ onMounted(() => (errors.value = {}));
         />
         <p v-if="errors.password" class="error">{{ errors.password[0] }}</p>
       </div>
-      <br>
+      
       <div>
         <input
           type="password"

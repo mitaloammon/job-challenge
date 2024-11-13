@@ -6,7 +6,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -24,23 +23,24 @@ class JWTAuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user','token'), 201);
+        return ['user' => $user,'token' => $token->plainTextToken];
     }
 
 
-    public function login(Request $request)
+    public function login(UserRequest $request)
     {
+        
+        $user = User::where('email', $request->email)->first();
         $credentials = $request->only('email', 'password');
+
 
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
 
-            // Get the authenticated user.
             $user = auth()->user();
 
-            // (optional) Attach the role to the token.
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
 
             return response()->json(compact('token'));
@@ -62,10 +62,10 @@ class JWTAuthController extends Controller
         return response()->json(compact('user'));
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return ['message' => 'Successfully logged out'];
     }
 }

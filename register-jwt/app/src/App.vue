@@ -33,5 +33,5 @@ const authStore = useAuthStore();
       </div>
     </nav>
   </header>
-<RouterView/>
+  <RouterView/>
 </template>

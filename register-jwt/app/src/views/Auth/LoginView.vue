@@ -16,7 +16,7 @@ onMounted(() => (errors.value = {}));
 
 <template>
   <main>
-    <br>
+    
     <h1 class="title">Login to your account</h1>
 
     <form
@@ -27,7 +27,7 @@ onMounted(() => (errors.value = {}));
         <input type="text" placeholder="Email" v-model="formData.email" />
         <p v-if="errors.email" class="error">{{ errors.email[0] }}</p>
       </div>
-      <br>
+      
       <div>
         <input
           type="password"
